@@ -99,6 +99,53 @@ public class RedBlackTree<E extends Comparable<E>> {
     private void fixInsert(Node<E> node) {
         // todo: implement the fixInsert method!
         // follow the instructions in readme.md
+        if (node == root)
+        {
+            node.color = Color.BLACK;
+            return;
+        }
+        if(node.parent.color == Color.BLACK)
+        {
+            return;
+        }
+        Node<E> pibling = node.parent.isLeftChild() ? node.parent.parent.right : node.parent.parent.left;
+        if(pibling.color == Color.RED)
+        {
+            node.parent.parent.color = Color.RED;
+            node.parent.color = Color.BLACK;
+            pibling.color = Color.BLACK;
+        }
+        if(node.parent.color == Color.RED) {
+            boolean nodeLeft = node.isLeftChild();
+            boolean parentLeft = node.parent.isLeftChild();
+
+            if(nodeLeft != parentLeft)
+            {
+                if(parentLeft){
+                    leftRotate(node.parent);
+                    node = node.left;
+                }
+                else {
+                    rightRotate(node.parent);
+                    node = node.right;
+                }
+                nodeLeft = !nodeLeft;
+            }
+
+            node.parent.parent.color = Color.RED;
+            node.parent.color = Color.BLACK;
+            if(nodeLeft == parentLeft)
+            {
+                if(nodeLeft)
+                {
+                    rightRotate(node.parent.parent);
+                }
+                else
+                {
+                    leftRotate(node.parent.parent);
+                }
+            }
+        }
     }
 
     private void leftRotate(Node<E> x) {
